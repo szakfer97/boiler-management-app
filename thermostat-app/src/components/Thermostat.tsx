@@ -1,5 +1,6 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 interface ThermostatProps {
   id: number;
@@ -14,12 +15,30 @@ interface TimeZone {
 const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
   const initialTemperature = 20;
   const [temperature, setTemperature] = useState(initialTemperature);
+  const [operatingMode, setOperatingMode] = useState("");
   const [timeZones, setTimeZones] = useState<TimeZone[]>([]);
   const [newTimeZone, setNewTimeZone] = useState<TimeZone>({
     start: "",
     end: "",
     targetTemperature: 20,
   });
+
+  useEffect(() => {
+    const dataToBackend = async () => {
+      try {
+        await axios.post("http://localhost:5555/temps", {
+          operatingMode,
+          currentTemp: temperature,
+          targetTemp: newTimeZone.targetTemperature,
+        });
+      } catch (error) {
+        console.error("Error sending data to backend:", error);
+      }
+    };
+    if (operatingMode) {
+      dataToBackend();
+    }
+  }, [operatingMode, temperature, newTimeZone]);
 
   const increaseTemperature = (amount: number) => {
     setTemperature((prevTemp) => prevTemp + amount);
@@ -53,6 +72,16 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
 
   const handleRemoveTimeZones = () => {
     setTimeZones([]);
+  };
+
+  const updateTemperature = (amount: number) => {
+    const newTemp = temperature + amount;
+    setTemperature(newTemp);
+  };
+
+  const handleTemperatureChange = (mode: string, amount: number) => {
+    setOperatingMode(mode);
+    updateTemperature(amount);
   };
 
   return (
@@ -100,7 +129,12 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
         <h2 className="font-bold">
           Current temperature: {initialTemperature}°C
         </h2>
-        <h3 className="font-bold">Target temperature: {temperature}°C</h3>
+        <h3
+          className="font-bold"
+          onClick={() => handleTemperatureChange("New temp", temperature)}
+        >
+          Target temperature: {temperature}°C
+        </h3>
       </div>
       <div>
         <h4 className="py-1 font-bold">Time Zones:</h4>
