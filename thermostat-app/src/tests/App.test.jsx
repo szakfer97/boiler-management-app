@@ -1,6 +1,6 @@
 import { expect, test, describe, render, fireEvent } from "vitest";
-import Thermostat from "./Thermostat";
-import App from "./App";
+import Thermostat from "../components/Thermostat";
+import App from "../components/App";
 
 describe("Thermostat component", () => {
   test("renders with initial temperature and target temperature", () => {
