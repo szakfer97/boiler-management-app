@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 interface ThermostatProps {
   id: number;
@@ -12,11 +13,11 @@ interface TimeZone {
 
 const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
   const getRandomTemperature = () => {
-    return (Math.random() * (23 - 17) + 17).toFixed(1);
+    return ((Math.floor(Math.random() * 13) + 25) * 0.5).toFixed(1);
   };
 
   const [initialTemperature] = useState<number>(
-    parseFloat(getRandomTemperature())
+    parseInt(getRandomTemperature())
   );
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
   }, [initialTemperature]);
 
   const [temperature, setTemperature] = useState(initialTemperature);
+  const [operatingMode, setOperatingMode] = useState("");
   const [timeZones, setTimeZones] = useState<TimeZone[]>([]);
   const [newTimeZone, setNewTimeZone] = useState<TimeZone>({
     start: "",
@@ -31,16 +33,37 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
     targetTemperature: 20,
   });
 
-  const increaseTemperature = (amount: number) => {
-    setTemperature((prevTemp) => prevTemp + amount);
-  };
+  useEffect(() => {
+    const dataToBackend = async () => {
+      try {
+        await axios.post("http://localhost:5555/temps", {
+          operatingMode,
+          currentTemp: initialTemperature,
+          targetTemp: temperature,
+        });
+      } catch (error) {
+        console.error("Error sending data to backend:", error);
+      }
+    };
 
-  const decreaseTemperature = (amount: number) => {
-    setTemperature((prevTemp) => prevTemp - amount);
-  };
+    if (operatingMode) {
+      dataToBackend();
+    }
+  }, [operatingMode, initialTemperature, temperature]);
 
   const resetTemperature = () => {
     setTemperature(initialTemperature);
+  };
+
+  const handleTemperatureChange = (amount: number) => {
+    if (amount === 1.5) {
+      setOperatingMode("Echo");
+    } else if (amount === 2) {
+      setOperatingMode("Normal");
+    } else if (amount === 3) {
+      setOperatingMode("Boost");
+    }
+    setTemperature((prevTemp) => prevTemp + amount);
   };
 
   const handleInputChange = (
@@ -71,37 +94,37 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
       <div className="flex justify-center space-x-2">
         <button
           className="p-2 bg-green-500 hover:bg-green-700 text-white rounded mx-2"
-          onClick={() => decreaseTemperature(1.5)}
+          onClick={() => handleTemperatureChange(-1.5)}
         >
           Echo -
         </button>
         <button
           className="p-2 bg-blue-500 hover:bg-blue-700 text-white rounded mx-2"
-          onClick={() => decreaseTemperature(2)}
+          onClick={() => handleTemperatureChange(-2)}
         >
           Normal -
         </button>
         <button
           className="p-2 bg-red-500 hover:bg-red-700 text-white rounded mx-2"
-          onClick={() => decreaseTemperature(3)}
+          onClick={() => handleTemperatureChange(-3)}
         >
           Boost -
         </button>
         <button
           className="p-2 bg-green-500 hover:bg-green-700 text-white rounded mx-2"
-          onClick={() => increaseTemperature(1.5)}
+          onClick={() => handleTemperatureChange(1.5)}
         >
           Echo +
         </button>
         <button
           className="p-2 bg-blue-500 hover:bg-blue-700 text-white rounded mx-2"
-          onClick={() => increaseTemperature(2)}
+          onClick={() => handleTemperatureChange(2)}
         >
           Normal +
         </button>
         <button
           className="p-2 bg-red-500 hover:bg-red-700 text-white rounded mx-2"
-          onClick={() => increaseTemperature(3)}
+          onClick={() => handleTemperatureChange(3)}
         >
           Boost +
         </button>
