@@ -7,7 +7,7 @@ export default function App() {
 
   const setThermostats = () => {
     if (numThermostats > 9) {
-      alert("9 is the maximum number of thermostats.");
+      alert("9 is the maximum number of thermostats that can be displayed.");
       return;
     }
     const newIDs = Array.from(
