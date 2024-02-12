@@ -13,12 +13,10 @@ interface TimeZone {
 
 const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
   const getRandomTemperature = () => {
-    return ((Math.floor(Math.random() * 13) + 25) * 0.5).toFixed(1);
+    return Math.floor(Math.random() * 9) + 16;
   };
 
-  const [initialTemperature] = useState<number>(
-    parseInt(getRandomTemperature())
-  );
+  const [initialTemperature] = useState<number>(getRandomTemperature());
 
   useEffect(() => {
     setTemperature(initialTemperature);
