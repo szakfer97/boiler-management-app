@@ -11,7 +11,9 @@ app.use(cors());
 
 app.get("/", (request, response) => {
   console.log(request);
-  return response.status(234).send("Boiler system backend");
+  return response
+    .status(234)
+    .send("Boiler system backend. Visit /temps for full data");
 });
 
 app.use("/temps", tempRoutes);
