@@ -32,11 +32,14 @@ router.post("/", async (request, response) => {
 router.get("/", async (request, response) => {
   try {
     const temps = await Temperature.find({});
-
-    return response.status(200).json({
-      count: temps.length,
-      data: temps,
+    let tableHtml =
+      "<table style='border-collapse: collapse; width: 100%;'><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>Current Temp</th><th style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>Target Temp</th><th style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>Operating Mode</th></tr>";
+    temps.forEach((temp) => {
+      tableHtml += `<tr style='background-color: #ffffff;'><td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>${temp.currentTemp}</td><td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>${temp.targetTemp}</td><td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>${temp.operatingMode}</td></tr>`;
     });
+    tableHtml += "</table>";
+
+    return response.status(200).send(tableHtml);
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
@@ -46,10 +49,9 @@ router.get("/", async (request, response) => {
 router.get("/:id", async (request, response) => {
   try {
     const { id } = request.params;
-
     const temp = await Temperature.findById(id);
-
-    return response.status(200).json(temp);
+    const tableHtml = `<table style='border-collapse: collapse; width: 100%;'><tr style='background-color: #f2f2f2;'><th style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>Current Temp</th><th style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>Target Temp</th><th style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>Operating Mode</th></tr><tr style='background-color: #ffffff;'><td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>${temp.currentTemp}</td><td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>${temp.targetTemp}</td><td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'>${temp.operatingMode}</td></tr></table>`;
+    return response.status(200).send(tableHtml);
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
