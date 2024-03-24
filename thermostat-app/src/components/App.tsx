@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Thermostat from "./Thermostat";
 
 export default function App() {
   const [numThermostats, setNumThermostats] = useState(1);
   const [thermostatIDs, setThermostatIDs] = useState([1]);
 
-  const setThermostats = () => {
+  const setThermostats = useCallback(() => {
     if (numThermostats > 9) {
       alert("9 is the maximum number of thermostats that can be displayed.");
       return;
@@ -15,12 +15,12 @@ export default function App() {
       (_, index) => index + 1
     );
     setThermostatIDs(newIDs);
-  };
+  }, [numThermostats]);
 
-  const resetThermostats = () => {
+  const resetThermostats = useCallback(() => {
     setNumThermostats(1);
     setThermostatIDs([1]);
-  };
+  }, []);
 
   return (
     <main className="h-screen flex justify-center items-center">
@@ -34,9 +34,9 @@ export default function App() {
           <input
             type="number"
             value={numThermostats}
-            onChange={(e) => setNumThermostats(parseInt(e.target.value))}
+            onChange={(e) => setNumThermostats(parseInt(e.target.value, 10))}
             min={1}
-            max={99}
+            max={9}
             className="p-1 mr-2 text-center text-white bg-black hover:bg-gray-700"
           />
           <button
