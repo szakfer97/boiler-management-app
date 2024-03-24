@@ -37,16 +37,16 @@ export default function App() {
             onChange={(e) => setNumThermostats(parseInt(e.target.value, 10))}
             min={1}
             max={9}
-            className="p-1 mr-2 text-center text-white bg-black hover:bg-gray-700"
+            className="p-1 mr-2 text-center text-white bg-black hover:bg-gray-700 border border-white"
           />
           <button
-            className="p-2 bg-black hover:bg-gray-500 text-white rounded"
+            className="p-2 bg-black hover:bg-gray-600 text-white rounded border border-white"
             onClick={setThermostats}
           >
             Set number of thermostats
           </button>
           <button
-            className="p-2 bg-gray-500 hover:bg-black text-white rounded ml-2"
+            className="p-2 bg-gray-600 hover:bg-black text-white rounded ml-2 border border-white"
             onClick={resetThermostats}
           >
             Reset number of thermostats

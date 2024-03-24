@@ -169,20 +169,20 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
       </div>
       <div className="mt-2 flex justify-center space-x-2">
         <button
-          className="p-2 bg-gray-500 hover:bg-black text-white rounded"
+          className="p-2 bg-gray-600 hover:bg-black text-white rounded border border-white"
           onClick={() => resetTemperature()}
         >
           Reset target temperature
         </button>
         <button
           onClick={handleAddTimeZone}
-          className="p-2 bg-gray-500 hover:bg-black text-white rounded"
+          className="p-2 bg-gray-600 hover:bg-black text-white rounded border border-white"
         >
           Add time zone
         </button>
         <button
           onClick={handleRemoveTimeZones}
-          className="p-2 bg-gray-500 hover:bg-black text-white rounded"
+          className="p-2 bg-gray-600 hover:bg-black text-white rounded border border-white"
         >
           Remove time zones
         </button>
