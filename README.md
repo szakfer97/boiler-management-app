@@ -1,6 +1,6 @@
 # boiler-management-app
 
-Boiler management app done with MERN stack
+Boiler management app done with Vite and MERN stack
 
 For FE on port 5173: yarn dev for running app, yarn test for testing
 
