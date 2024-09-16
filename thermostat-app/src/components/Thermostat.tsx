@@ -87,9 +87,9 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
   };
 
   return (
-    <div className="border p-4 space-y-2">
+    <div className="border px-4 py-2 space-y-2">
       <h1 className="font-bold text-center">Thermostat {id}</h1>
-      <div className="flex justify-center space-x-2">
+      <div className="flex justify-center space-x-2 font-bold">
         <button
           className="p-2 bg-green-500 hover:bg-green-700 text-white rounded mx-2"
           onClick={() => handleTemperatureChange(-1.5)}
@@ -134,7 +134,7 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
         <h3 className="font-bold">Target temperature: {temperature}°C</h3>
       </div>
       <div>
-        <h4 className="py-1 font-bold">Time Zones:</h4>
+        <h4 className="pb-1 font-bold">Time Zones:</h4>
         {timeZones.map((timeZone, index) => (
           <div key={index}>
             <p>
@@ -167,12 +167,12 @@ const Thermostat: React.FC<ThermostatProps> = ({ id }) => {
           />
         </div>
       </div>
-      <div className="mt-2 flex justify-center space-x-2">
+      <div className="font-bold mt-2 flex justify-center space-x-2">
         <button
           className="p-2 bg-gray-600 hover:bg-black text-white rounded border border-white"
           onClick={() => resetTemperature()}
         >
-          Reset target temperature
+          Reset target
         </button>
         <button
           onClick={handleAddTimeZone}
